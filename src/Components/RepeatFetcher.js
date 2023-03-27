@@ -184,29 +184,39 @@ class RepeatFetcher {
             // during a meeting between Ms. Belinda, Ms. Laura, Mike, & myself.
 
             const date = new Date(sunday)
-            
+
             const days = Array.from({ length: 7 }, () => [])
-            let dayLimit = 0 // Reps the days that have label checks, by index
+
+            const purgeableDays = []
 
             // Sort the checks into days
             // (not uber efficient)
             days.forEach((day, i) => {
-                
+
                 weighedLabelChecks.filter((check) => {
                     return check.date.getDate() === date.getDate()
                 }).forEach((check) => {
                     day.push(check)
-                    dayLimit = i
                 })
+
+                if (!day.length) purgeableDays.push(i)
+
                 date.setDate(date.getDate() + 1)
             })
 
+
             // We dont need extra day arrays
-            days.splice(dayLimit+1, 7-dayLimit)
+            purgeableDays.sort((a, b) => {
+                return b - a
+            })
+            purgeableDays.forEach((index) => {
+                days.splice(index, 1)
+            })
             //
 
+            const scores = days.map((day) => {
 
-            const scores = days.map((day, ix) => {
+                if (!day.length) return
 
                 const scoredDay = {
                     date: new Date(sunday),
@@ -269,7 +279,7 @@ class RepeatFetcher {
             // Compile a sum of all the dailies
             // to return as a weekly sum
 
-            
+
         }
     }
 
