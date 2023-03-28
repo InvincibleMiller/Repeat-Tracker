@@ -11,26 +11,6 @@ class RepeatFetcher {
         this.repeatPath = 'repeats/'
         this.checksPath = 'checks/'
 
-        this._parseFireBaseLabelChecks = (fb_docs) => {
-
-            const rv = fb_docs.map((doc, i) => {
-                const violations = doc._document.data.value.mapValue.fields.violations.arrayValue.values
-                return {
-                    date: doc._document.data.value.mapValue.fields.date.timestampValue,
-                    fullName: doc._document.data.value.mapValue.fields.fullName.stringValue,
-                    location: doc._document.data.value.mapValue.fields.location.stringValue,
-                    dayPart: doc._document.data.value.mapValue.fields.dayPart.stringValue,
-                    violations: violations ? violations.map((v, ix) => ({
-                        corrective: v.mapValue.fields.corrective.stringValue,
-                        product: v.mapValue.fields.product.stringValue,
-                        type: v.mapValue.fields.type.stringValue,
-                    })) : []
-                }
-            })
-
-            return rv
-        }
-
         this._fetchLabelChecks = async (timeStampStart, timeStampEnd) => {
             // Fetch the label checks from the specified week
 
@@ -40,47 +20,17 @@ class RepeatFetcher {
                 where('date', '>=', timeStampStart),
                 where('date', '<=', timeStampEnd))
 
-            let checks = null
+            let checks = []
 
-            await getDocs(group).then(({ docs }) => {
-                checks = this._parseFireBaseLabelChecks(docs)
+            const docsRef = await getDocs(group)
+
+            if (!docsRef.docs) { console.error('Label Checks could not be pulled/parsed.'); return }
+
+            docsRef.docs.forEach((snap) => {
+                checks.push(snap.data())
             })
 
-            if (!checks) { console.error('Label Checks could not be pulled/parsed.'); return }
-
-            return checks ? checks : []
-        }
-
-        this._parseFireBaseRepeats = (docs) => {
-            // Remove the junk from the object
-            // so it can be read easily.
-            let parsedDocs = docs.map((doc, i) => {
-
-                const data = doc._document.data.value.mapValue.fields
-
-                return ({
-                    id: doc.id,
-                    created_at: data.created_at.stringValue,
-                    expiresOn: data.expiresOn.timestampValue,
-                    foundOn: data.foundOn.timestampValue,
-                    type: data.type.stringValue,
-                    product: data.product.stringValue,
-                })
-            })
-
-            return parsedDocs // changed
-        }
-
-        this._parseTsString = (string) => {
-            const split = string.split('T')
-            const dateStringArr = split[0].split('-')
-            // const smallerBreak = split[1].split('.')[0].split(':')
-
-            const dt = new Date()
-            dt.setFullYear(dateStringArr[0]); dt.setMonth(dateStringArr[1] - 1); dt.setDate(dateStringArr[2])
-            dt.setHours(0); dt.setMinutes(0); dt.setSeconds(0)
-
-            return dt
+            return checks
         }
 
         this._pullRepeats = async (dateStart, dateEnd) => {
@@ -94,21 +44,22 @@ class RepeatFetcher {
             // repeat period = 2
             const group = query(repeatCollection, orderBy('created_at'))
 
-            let repeats = null
+            let repeats = []
 
-            await getDocs(group).then(({ docs }) => {
-                repeats = this._parseFireBaseRepeats(docs)
+            const docsRef = await getDocs(group)
+            if (!docsRef.docs) { console.error('Repeats could not be pulled/parsed.'); return }
+
+            docsRef.docs.forEach((snap) => {
+                repeats.push(snap.data())
             })
-
-            if (!repeats) { console.error('Repeats could not be pulled/parsed.'); return }
 
             repeats = repeats.filter((rep) => {
                 // start2 < end1
-                const ts = this._parseTsString(rep.foundOn) // start 2
+                const ts = rep.foundOn.toDate() // start 2
                 const slte = ts <= dateEnd // end 1
 
                 // start1 < end2
-                const te = this._parseTsString(rep.expiresOn) // end 2
+                const te = rep.expiresOn.toDate() // end 2
                 const sl2te = dateStart <= te // start 1
 
                 return slte && sl2te
@@ -126,7 +77,7 @@ class RepeatFetcher {
                 // checks these will be exported to the calendar 
                 // and processed outside of this fetcher.
                 let weighedLabelCheck = {
-                    date: this._parseTsString(check.date),
+                    date: check.date.toDate(),
                     fullName: check.fullName,
                     location: check.location,
                     dayPart: check.dayPart,
