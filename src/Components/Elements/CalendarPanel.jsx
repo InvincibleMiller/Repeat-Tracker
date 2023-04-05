@@ -53,7 +53,7 @@ const CalendarPanel = ({ setGlobalDay }) => {
     }
 
     return (
-        <div className='panel w-[24rem] flex flex-col'>
+        <div className='panel w-full md:w-[24rem] flex flex-col'>
 
             <div className='mb-3 inline-flex space-x-2'>
                 <span onClick={() => move(-1)} className='calendar-move-btn'>{'<'}</span>
