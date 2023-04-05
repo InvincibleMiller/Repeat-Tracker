@@ -235,7 +235,7 @@ class RepeatFetcher {
                 return scoredDay
             })
 
-            console.log(scores);
+            return scores
         }
 
         this._sumUpDailies = (dailyResults) => {
@@ -246,12 +246,14 @@ class RepeatFetcher {
 
     getResults = async (date) => {
 
+        const dt = new Date(date)
+
         // Pre get the start and end to save time
-        date.setHours(0); date.setMinutes(0); date.setSeconds(0)
-        date.setDate(date.getDate() - date.getDay())
-        const weekStart = new Date(date)
-        date.setDate(date.getDate() + 7)
-        const weekEnd = date
+        dt.setHours(0); dt.setMinutes(0); dt.setSeconds(0)
+        dt.setDate(dt.getDate() - dt.getDay())
+        const weekStart = new Date(dt)
+        dt.setDate(dt.getDate() + 7)
+        const weekEnd = dt
 
         const tsStart = Timestamp.fromDate(weekStart)
         const tsEnd = Timestamp.fromDate(weekEnd)
@@ -271,6 +273,7 @@ class RepeatFetcher {
             repeats: repeats,
             weighedChecksByDay: weighedChecksByDay,
             weeksResult: weeksResult,
+            dailyResults: dailyResults,
         })
     }
 }

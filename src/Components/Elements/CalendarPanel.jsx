@@ -15,10 +15,6 @@ const CalendarPanel = ({ setGlobalDay }) => {
         const table = getMonth()
         setMonth(table)
         move(0)
-
-        // console.table(table);
-
-        if (selectedDay) setGlobalDay(selectedDay)
     }, [selectedDay, monthIndex])
 
     const getMonth = () => {
@@ -28,8 +24,6 @@ const CalendarPanel = ({ setGlobalDay }) => {
         // const month = months[day.getMonth()]
         const lastOfMonth = new Date(day.getFullYear(), day.getMonth() + 1, 0)
         const firstOfMonth = new Date(day.getFullYear(), day.getMonth(), 1)
-
-        console.log(firstOfMonth);
 
         const dayOffset = 0 - firstOfMonth.getDay() + 1
 
@@ -43,7 +37,7 @@ const CalendarPanel = ({ setGlobalDay }) => {
 
                 return <DayDot key={flatIndex} day={d}
                     inMonth={d <= lastOfMonth && d >= firstOfMonth}
-                    onSelect={() => setSD(d)} compare={sel} />
+                    onSelect={() => { setSD(d); setGlobalDay(d) }} compare={sel} />
             })
         })
 
@@ -55,16 +49,16 @@ const CalendarPanel = ({ setGlobalDay }) => {
         const dt = new Date()
         dt.setMonth(dt.getMonth() + monthIndex)
 
-        setStrMonth(dt.toString().slice(4,7) + ' ' + dt.getFullYear())
+        setStrMonth(dt.toString().slice(4, 7) + ' ' + dt.getFullYear())
     }
 
     return (
         <div className='panel w-[24rem] flex flex-col'>
 
-            <div className='mb-3 inline-flex'>
-                <span onClick={() => move(-1)} className='hover:cursor-pointer w-10 h-10 mr-2 bg-gray-200 rounded-full leading-[0px] py-5 text-center'>{'<'}</span>
-                <h2 className='font-bold text-2xl text-gray-600'>{strMonth}</h2>
-                <span onClick={() => move(+1)} className='hover:cursor-pointer w-10 h-10 ml-2 bg-gray-200 rounded-full leading-[0px] py-5 text-center'>{'>'}</span>
+            <div className='mb-3 inline-flex space-x-2'>
+                <span onClick={() => move(-1)} className='calendar-move-btn'>{'<'}</span>
+                <span className='heading leading-[0px] py-5 w-32 text-center'>{strMonth}</span>
+                <span onClick={() => move(+1)} className='calendar-move-btn'>{'>'}</span>
             </div>
 
             <div className='grid grid-cols-7 gap-0 mb-1'>
