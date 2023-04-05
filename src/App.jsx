@@ -9,11 +9,10 @@ function App() {
   const [tab, setTab] = useState(1)
 
   useEffect(() => {
-    const week = new Date()
-    // week.setDate(4)
+    const dt = new Date
 
     const rf = new RepeatFetcher()
-    rf.getResults(week)
+    rf.getResults(dt)
   }, [])
 
 

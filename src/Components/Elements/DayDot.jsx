@@ -5,7 +5,7 @@ const DayDot = ({ day, inMonth, onSelect, compare }) => {
     const [check, setCheck] = useState(false)
 
     useEffect(() => {
-        setBG('')
+        setBG('bg-transparent')
         if (!inMonth) setBG('bg-gray-200')
         if (compare) setBG('bg-blue-300')
     })
