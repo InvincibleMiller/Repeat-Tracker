@@ -206,14 +206,26 @@ class RepeatFetcher {
                 scoredDay.date.setDate(day[0].date.getDate())
 
                 day.forEach((check) => {
-                    scoredDay.score -= check.totalViolations + check.totalRepeats
+                    let totalLosses = 0
 
                     const path = check.location === 'Kitchen' ? 'kitchen' : 'front'
                     const path2 = check.dayPart === 'AM' ? 'am' : 'pm'
 
                     scoredDay[path][path2].totalLabelChecks += 1
-                    check.repeats.forEach((rep) => scoredDay[path][path2].repeats.push(rep))
-                    check.violations.forEach((vio) => scoredDay[path][path2].violations.push(vio))
+                    check.repeats.forEach((rep) => {
+                        if (rep.type === 'Expired') return
+
+                        scoredDay[path][path2].repeats.push(rep)
+                        totalLosses += 2
+                    })
+                    check.violations.forEach((vio) => {
+                        if (vio.type === 'Expired') return
+
+                        scoredDay[path][path2].violations.push(vio)
+                        totalLosses += 1
+                    })
+
+                    scoredDay.score -= totalLosses
 
                     // TODO - Decide later if a copy of the original check should be included
                     // technically, we have all of the information needed, except the submitter
@@ -229,8 +241,6 @@ class RepeatFetcher {
         this._sumUpDailies = (dailyResults) => {
             // Compile a sum of all the dailies
             // to return as a weekly sum
-
-
         }
     }
 
