@@ -106,6 +106,12 @@ class RepeatFetcher {
                     // are repeated violations, then
                     // they count as double
                     repeats.every((rep) => {
+                        // The repeat shouldn't affect us till the following week
+                        const effectDt = rep.foundOn.toDate()
+                        effectDt.setDate(effectDt.getDate() + 7 - effectDt.getDay())
+
+                        if (effectDt >= weighedLabelCheck.date) return false
+
                         match = match || vio.type === rep.type && vio.product === rep.product
 
                         // TODO - Sort by food quality or food safety
