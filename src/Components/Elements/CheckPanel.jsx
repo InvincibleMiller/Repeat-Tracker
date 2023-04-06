@@ -78,7 +78,8 @@ const CheckPanel = ({ day }) => {
   }
 
   return (
-    <div className='panel w-full'>
+    <div className={`panel w-full ${labelCheck ? '' : ''}
+                     transition-all duration-[0.4s]`}>
       {labelCheck &&
         <>
           <div className="heading mb-3 h-10">

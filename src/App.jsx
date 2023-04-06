@@ -8,7 +8,7 @@ function App() {
   const [tab, setTab] = useState(1)
 
   return (
-    <div className="App">
+    <div className="App h-full w-full">
       <NavBar index={tab} setTab={setTab} />
       <TabContainer tab={tab} tabs={['', <DayView/>]} />
     </div>
