@@ -68,6 +68,21 @@ class RepeatFetcher {
             return repeats ? repeats : []
         }
 
+        this._consolidateViolations = (checkViolations) => {
+            const vio_return = []
+
+            checkViolations.forEach((v, i) => {
+                const len = vio_return.filter((vx) => (vx.product === v.product && vx.type === v.type)).length
+                if (len === 0) {
+                    vio_return.push(v)
+                }
+            })
+
+            console.log(vio_return);
+
+            return vio_return
+        }
+
         this._weighLabelChecks = (checks, repeats) => {
             // Return an array of daily results
             // point = Violation * weight = (1 * 2)
@@ -98,7 +113,7 @@ class RepeatFetcher {
                     repeats: [],
                 }
 
-                check.violations.forEach((vio) => {
+                this._consolidateViolations(check.violations).forEach((vio) => {
 
                     let match = false
 
