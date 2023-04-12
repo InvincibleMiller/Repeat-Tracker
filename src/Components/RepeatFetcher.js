@@ -123,9 +123,12 @@ class RepeatFetcher {
                     repeats.every((rep) => {
                         // The repeat shouldn't affect us till the following week
                         const effectDt = rep.foundOn.toDate()
-                        effectDt.setDate(effectDt.getDate() + 7 - effectDt.getDay())
+                        
+                        // <-- Previously used to make repeats not start until the next week
+                        // effectDt.setDate(effectDt.getDate() + 7 - effectDt.getDay())
 
-                        if (effectDt >= weighedLabelCheck.date) return false
+
+                        if (effectDt > weighedLabelCheck.date) return false
 
                         match = match || vio.type === rep.type && vio.product === rep.product
 
@@ -133,6 +136,8 @@ class RepeatFetcher {
                         // in the future <-- Here!!
                         if (match) weighedLabelCheck.repeats.push(vio)
 
+                        // If match is false, we continue,
+                        // else we move out.
                         return !match
                     })
 
