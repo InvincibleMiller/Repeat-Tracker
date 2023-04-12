@@ -42,4 +42,8 @@
         transition-all duration-100 ease-linear
         scale-0 origin-left;
     }
+
+    .sub-panel {
+        @apply w-full md:w-max
+    }
 }

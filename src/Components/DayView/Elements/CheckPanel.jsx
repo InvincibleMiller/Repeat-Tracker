@@ -85,7 +85,7 @@ const CheckPanel = ({ day }) => {
 
   const getScorePanel = (labelCheck) => {
     return (
-      <div className="border-[2px] w-max p-2">
+      <div className="border-[2px] sub-panel p-2">
         <div className='shift-heading mb-2 text-lg'>
           Score: {labelCheck.score}
         </div>
@@ -111,12 +111,12 @@ const CheckPanel = ({ day }) => {
 
   const getDataPanel = (labelCheck) => {
     return (
-      <div className="border-[2px] w-max p-2">
+      <div className="border-[2px] sub-panel p-2">
         <div>
           <div className='shift-heading mb-2 text-lg'>
             Label Check Completion Rate
           </div>
-          <table className='border-collapse border-[2px]'>
+          <table className='border-collapse sub-panel border-[2px]'>
             <thead>
               <th className='t-cell'></th>
               <th className='t-cell'>AM</th>
@@ -148,12 +148,12 @@ const CheckPanel = ({ day }) => {
           <div className="heading mb-3 h-10">
             {labelCheck.date ? formatDateIntoHeader(labelCheck.date) : null}
           </div>
-          <div className='flex flex-row gap-x-2'>
-            <div className='w-max'>
+          <div className='flex flex-col md:flex-row md:gap-x-2 gap-y-2 md:gap-y-0'>
+            <div className='sub-panel'>
               <h2 className='text-xl font-bold mb-2'>Results:</h2>
               {getScorePanel(labelCheck)}
             </div>
-            <div className='w-max'>
+            <div className='sub-panel'>
               <div className='mb-2'>
                 <h2 className='text-xl font-bold mb-2'>Data:</h2>
                 {getDataPanel(labelCheck)}
