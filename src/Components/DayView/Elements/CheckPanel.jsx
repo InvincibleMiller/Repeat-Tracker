@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import RepeatFetcher from '../RepeatFetcher'
+import RepeatFetcher from '../../RepeatFetcher'
 
 const CheckPanel = ({ day }) => {
   const [labelCheck, setLabelCheck] = useState(null)

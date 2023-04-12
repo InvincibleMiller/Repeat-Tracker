@@ -78,7 +78,7 @@ class RepeatFetcher {
                 }
             })
 
-            console.log(vio_return);
+            // console.log(vio_return);
 
             return vio_return
         }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import CheckPanel from '../Elements/CheckPanel'
-import CalendarPanel from '../Elements/CalendarPanel'
+import CheckPanel from './Elements/CheckPanel'
+import CalendarPanel from './Elements/CalendarPanel'
 
 const DayView = () => {
     const [day, setDay] = useState(null)
