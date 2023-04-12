@@ -53,8 +53,8 @@ const CheckPanel = ({ day }) => {
     return <div key={index} className='relative flex items-center justify-start w-max group'>
       <div>{finding.type}: {finding.product} {repeat && <span className='text-red-600 font-semibold'>x2</span>}</div>
 
-      {(finding.initials && finding.type != 'No Label') &&
-        <div className='tool-tip group-hover:scale-100'>{finding.initials}</div>
+      {(finding.type != 'No Label') &&
+        <div className='tool-tip group-hover:scale-100'>{finding.initials ? finding.initials : '??'}</div>
       }
     </div>
   }
