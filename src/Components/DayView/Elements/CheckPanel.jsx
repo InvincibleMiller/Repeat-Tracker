@@ -50,7 +50,13 @@ const CheckPanel = ({ day }) => {
   }
 
   const getListItem = (finding, index, repeat = false) => {
-    return <div key={index}>{finding.type}: {finding.product} {repeat && <span className='text-red-600 font-semibold'>x2</span>}</div>
+    return <div key={index} className='relative flex items-center justify-start w-max group'>
+      <div>{finding.type}: {finding.product} {repeat && <span className='text-red-600 font-semibold'>x2</span>}</div>
+
+      {(finding.initials && finding.type != 'No Label') &&
+        <div className='tool-tip group-hover:scale-100'>{finding.initials}</div>
+      }
+    </div>
   }
 
   const parseShift = (shift, name) => {
@@ -77,6 +83,63 @@ const CheckPanel = ({ day }) => {
     </>
   }
 
+  const getScorePanel = (labelCheck) => {
+    return (
+      <div className="border-[2px] w-max p-2">
+        <div className='shift-heading mb-2 text-lg'>
+          Score: {labelCheck.score}
+        </div>
+        <div className="list">
+          {parseShift(labelCheck.kitchen.am, 'BOH AM')}
+        </div>
+        <div className="list">
+          {parseShift(labelCheck.front.am, 'FOH AM')}
+        </div>
+        <div className="list">
+          {parseShift(labelCheck.kitchen.pm, 'BOH PM')}
+        </div>
+        <div className="list">
+          {parseShift(labelCheck.front.pm, 'FOH PM')}
+        </div>
+      </div>
+    )
+  }
+
+  const getLabelCheckCompletionRate = (shift, expectedLabelChecks) => {
+    return (shift.totalLabelChecks / expectedLabelChecks * 100) + '%'
+  }
+
+  const getDataPanel = (labelCheck) => {
+    return (
+      <div className="border-[2px] w-max p-2">
+        <div>
+          <div className='shift-heading mb-2 text-lg'>
+            Label Check Completion Rate
+          </div>
+          <table className='border-collapse border-[2px]'>
+            <thead>
+              <th className='t-cell'></th>
+              <th className='t-cell'>AM</th>
+              <th className='t-cell'>PM</th>
+            </thead>
+            <tbody>
+              <tr>
+                <th className='t-cell'>Front</th>
+                <td className='t-cell'>{getLabelCheckCompletionRate(labelCheck.front.am, 2)}</td>
+                <td className='t-cell'>{getLabelCheckCompletionRate(labelCheck.front.pm, 2)}</td>
+              </tr>
+              <tr>
+                <th className='t-cell'>Kitchen</th>
+                <td className='t-cell'>{getLabelCheckCompletionRate(labelCheck.kitchen.am, 2)}</td>
+                <td className='t-cell'>{getLabelCheckCompletionRate(labelCheck.kitchen.pm, 2)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={`panel w-full ${labelCheck ? '' : ''}
                      transition-all duration-[0.4s]`}>
@@ -85,20 +148,20 @@ const CheckPanel = ({ day }) => {
           <div className="heading mb-3 h-10">
             {labelCheck.date ? formatDateIntoHeader(labelCheck.date) : null}
           </div>
-          <div className='shift-heading mb-2 text-lg'>
-            Score: {labelCheck.score}
-          </div>
-          <div className="list">
-            {parseShift(labelCheck.kitchen.am, 'BOH AM')}
-          </div>
-          <div className="list">
-            {parseShift(labelCheck.front.am, 'FOH AM')}
-          </div>
-          <div className="list">
-            {parseShift(labelCheck.kitchen.pm, 'BOH PM')}
-          </div>
-          <div className="list">
-            {parseShift(labelCheck.front.pm, 'FOH PM')}
+          <div className='flex flex-row gap-x-2'>
+            <div className='w-max'>
+              <h2 className='text-xl font-bold mb-2'>Results:</h2>
+              {getScorePanel(labelCheck)}
+            </div>
+            <div className='w-max'>
+              <div className='mb-2'>
+                <h2 className='text-xl font-bold mb-2'>Data:</h2>
+                {getDataPanel(labelCheck)}
+              </div>
+              <div>
+
+              </div>
+            </div>
           </div>
         </>
       }

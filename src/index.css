@@ -25,6 +25,21 @@
     }
 
     .list {
-        @apply mb-3
+        @apply mb-3 last:mb-0
+    }
+
+    .list-row {
+        @apply flex flex-row gap-x-1
+    }
+
+    .t-cell {
+        @apply w-24 text-center border-[1px]
+    }
+
+    .tool-tip {
+        @apply absolute w-auto p-2 m-2 min-w-max right-[-1.5rem]
+        rounded-md shadow-md bg-white border-[2px] font-bold 
+        transition-all duration-100 ease-linear
+        scale-0 origin-left;
     }
 }
