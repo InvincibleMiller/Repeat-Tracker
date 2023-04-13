@@ -8,7 +8,7 @@ const CheckPanel = ({ day }) => {
   const [weekEnd, setWe] = useState(null)
 
   const rf = new RepeatFetcher()
-
+  
   useEffect(() => {
     const effect = async () => {
       let cache = []
@@ -106,7 +106,7 @@ const CheckPanel = ({ day }) => {
   }
 
   const getLabelCheckCompletionRate = (shift, expectedLabelChecks) => {
-    return (shift.totalLabelChecks / expectedLabelChecks * 100) + '%'
+    return (shift.totalLabelChecks / expectedLabelChecks * 100)
   }
 
   const getDataPanel = (labelCheck) => {
@@ -118,20 +118,22 @@ const CheckPanel = ({ day }) => {
           </div>
           <table className='border-collapse sub-panel border-[2px]'>
             <thead>
-              <th className='t-cell'></th>
-              <th className='t-cell'>AM</th>
-              <th className='t-cell'>PM</th>
+              <tr>
+                <th className='t-cell'></th>
+                <th className='t-cell'>AM</th>
+                <th className='t-cell'>PM</th>
+              </tr>
             </thead>
             <tbody>
               <tr>
                 <th className='t-cell'>Front</th>
-                <td className='t-cell'>{getLabelCheckCompletionRate(labelCheck.front.am, 2)}</td>
-                <td className='t-cell'>{getLabelCheckCompletionRate(labelCheck.front.pm, 2)}</td>
+                <td className='t-cell'>{getLabelCheckCompletionRate(labelCheck.front.am, 2) + '%'}</td>
+                <td className='t-cell'>{getLabelCheckCompletionRate(labelCheck.front.pm, 2) + '%'}</td>
               </tr>
               <tr>
                 <th className='t-cell'>Kitchen</th>
-                <td className='t-cell'>{getLabelCheckCompletionRate(labelCheck.kitchen.am, 2)}</td>
-                <td className='t-cell'>{getLabelCheckCompletionRate(labelCheck.kitchen.pm, 2)}</td>
+                <td className='t-cell'>{getLabelCheckCompletionRate(labelCheck.kitchen.am, 2) + '%'}</td>
+                <td className='t-cell'>{getLabelCheckCompletionRate(labelCheck.kitchen.pm, 2) + '%'}</td>
               </tr>
             </tbody>
           </table>
@@ -141,14 +143,14 @@ const CheckPanel = ({ day }) => {
   }
 
   return (
-    <div className={`panel w-full ${labelCheck ? '' : ''}
+    <div className={`panel w-full origin-top ${labelCheck ? 'scale-y-100' : 'scale-y-0'}
                      transition-all duration-[0.4s]`}>
       {labelCheck &&
         <>
           <div className="heading mb-3 h-10">
             {labelCheck.date ? formatDateIntoHeader(labelCheck.date) : null}
           </div>
-          <div className='flex flex-col md:flex-row md:gap-x-2 gap-y-2 md:gap-y-0'>
+          <div className='sub-panel-container'>
             <div className='sub-panel'>
               <h2 className='text-xl font-bold mb-2'>Results:</h2>
               {getScorePanel(labelCheck)}
@@ -157,9 +159,6 @@ const CheckPanel = ({ day }) => {
               <div className='mb-2'>
                 <h2 className='text-xl font-bold mb-2'>Data:</h2>
                 {getDataPanel(labelCheck)}
-              </div>
-              <div>
-
               </div>
             </div>
           </div>

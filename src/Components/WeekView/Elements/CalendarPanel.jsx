@@ -4,7 +4,7 @@ import WeekDot from './WeekDot'
 
 const CalendarPanel = ({ setGlobalDay }) => {
     const [monthIndex, setMonthIx] = useState(0)
-    const [selectedWeek, setSW] = useState(new Date())
+    const [selectedWeek, setSW] = useState(null)
     const [month, setMonth] = useState([])
 
     const [strMonth, setStrMonth] = useState('')
@@ -32,8 +32,10 @@ const CalendarPanel = ({ setGlobalDay }) => {
             const endDate = new Date(startDate)
             endDate.setDate(endDate.getDate() + 7)
 
+            const sel = selectedWeek && selectedWeek.toString() === startDate.toString()
+
             return <WeekDot key={i} start={startDate} end={endDate}
-                onSelect={() => { setSW(startDate); setGlobalDay(startDate) }} compare={selectedWeek.toString() === startDate.toString()} /> // <-- LOOSE END __ NEEDS FIXING
+                onSelect={() => { setSW(startDate); setGlobalDay(startDate) }} compare={sel} /> // <-- LOOSE END __ NEEDS FIXING
         })
 
         return dayMatrix
@@ -50,9 +52,9 @@ const CalendarPanel = ({ setGlobalDay }) => {
     return (
         <div className='panel w-full md:w-[24rem] flex flex-col'>
 
-            <div className='mb-3 inline-flex space-x-2'>
+            <div className='calendar-panel'>
                 <span onClick={() => move(-1)} className='calendar-move-btn'>{'<'}</span>
-                <span className='heading leading-[0px] py-5 w-32 text-center'>{strMonth}</span>
+                <span className='calendar-heading'>{strMonth}</span>
                 <span onClick={() => move(+1)} className='calendar-move-btn'>{'>'}</span>
             </div>
 

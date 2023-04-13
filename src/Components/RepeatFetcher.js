@@ -267,6 +267,18 @@ class RepeatFetcher {
         this._sumUpDailies = (dailyResults) => {
             // Compile a sum of all the dailies
             // to return as a weekly sum
+
+            let weeklySum = {
+                score: 0,
+            }
+
+            dailyResults.forEach((day) => {
+                weeklySum.score += day.score
+            })
+
+            weeklySum.score /= dailyResults.length
+
+            return weeklySum
         }
     }
 

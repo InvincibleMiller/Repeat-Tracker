@@ -12,12 +12,24 @@
         @apply border-2 border-gray-200 rounded-lg p-4 shadow-md shadow-gray-300 md:hover:shadow-gray-300 transition-all duration-[0.3s] h-min w-min max-w-full text-lg
     }
 
+    .calendar-panel {
+        @apply w-full mb-3 inline-flex justify-between space-x-2
+    }
+
     .calendar-move-btn {
         @apply hover:cursor-pointer w-10 h-10 hover:bg-gray-200 bg-gray-100 border-[1px] border-gray-300 transition-all duration-75 rounded-lg leading-[0px] py-5 text-center
     }
 
+    .calendar-heading {
+        @apply heading min-w-max leading-[0px] py-5 w-32 text-center
+    }
+
+    .sub-panel-container {
+        @apply flex flex-col md:flex-row md:gap-x-2 gap-y-2 md:gap-y-0
+    }
+
     .heading {
-        @apply font-bold text-2xl text-gray-900
+        @apply font-bold text-2xl
     }
 
     .shift-heading {
@@ -45,5 +57,9 @@
 
     .sub-panel {
         @apply w-full md:w-max
+    }
+
+    .sub-panel-2 {
+        @apply border-[2px] sub-panel p-2 flex flex-col items-center
     }
 }

@@ -55,9 +55,9 @@ const CalendarPanel = ({ setGlobalDay }) => {
     return (
         <div className='panel w-full md:w-[24rem] flex flex-col'>
 
-            <div className='mb-3 inline-flex space-x-2'>
+            <div className='calendar-panel'>
                 <span onClick={() => move(-1)} className='calendar-move-btn'>{'<'}</span>
-                <span className='heading leading-[0px] py-5 w-32 text-center'>{strMonth}</span>
+                <span className='calendar-heading'>{strMonth}</span>
                 <span onClick={() => move(+1)} className='calendar-move-btn'>{'>'}</span>
             </div>
 
