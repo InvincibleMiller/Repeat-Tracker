@@ -45,9 +45,10 @@ const WeekPanel = ({ week }) => {
     const getCompletionTables = () => {
         if (!weeklyData) return null
         const dailies = weeklyData.dailyResults
+        const daysCompleted = dailies.length
 
         let [fAM, fPM, kAM, kPM] = new Array(4).fill(0)
-        const labelChecksExpectedDuringWeekPerShift = 2 * 6
+        const labelChecksExpectedDuringWeekPerShift = 2 * daysCompleted
 
         dailies.forEach((day) => {
             fAM += day.front.am.totalLabelChecks
@@ -125,15 +126,15 @@ const WeekPanel = ({ week }) => {
             <div className="heading mb-3 h-10">
                 {week && getDateRange(week)}
             </div>
-            <div className="sub-panel-container">
-                <div className='sub-panel'>
-                    <h2 className="shift-heading">
-                        Results
-                    </h2>
-                    <div className="sub-panel-2">
-                        <h2 className='shift-heading text-lg'>Score: {weeklyData && Math.floor(weeklyData.weeksResult.score * 100) / 100}</h2>
-                    </div>
+            <div className='sub-panel mb-2'>
+                <h2 className="shift-heading">
+                    Results
+                </h2>
+                <div className="sub-panel-2">
+                    <h2 className='shift-heading text-lg'>Score: {weeklyData && Math.floor(weeklyData.weeksResult.score * 100) / 100}</h2>
                 </div>
+            </div>
+            <div className="sub-panel-container">
                 <div className="flex-col">
                     <h2 className="shift-heading">
                         Data
