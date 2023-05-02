@@ -3,63 +3,63 @@
 @tailwind utilities;
 
 #root {
-    height: 100vh;
-    width: 100vw;
+  height: 100vh;
+  width: 100vw;
 }
 
 @layer components {
-    .panel {
-        @apply border-2 border-gray-200 rounded-lg p-4 shadow-md shadow-gray-300 md:hover:shadow-gray-300 transition-all duration-[0.3s] h-min w-min max-w-full text-lg
-    }
+  .panel {
+    @apply border-2 border-gray-200 rounded-lg p-4 shadow-md shadow-gray-300 md:hover:shadow-gray-300 transition-all duration-[0.3s] h-min w-min max-w-full text-lg;
+  }
 
-    .calendar-panel {
-        @apply w-full mb-3 inline-flex justify-between space-x-2
-    }
+  .calendar-panel {
+    @apply w-full mb-3 inline-flex justify-between space-x-2;
+  }
 
-    .calendar-move-btn {
-        @apply hover:cursor-pointer w-10 h-10 hover:bg-gray-200 bg-gray-100 border-[1px] border-gray-300 transition-all duration-75 rounded-lg leading-[0px] py-5 text-center
-    }
+  .calendar-move-btn {
+    @apply hover:cursor-pointer w-10 h-10 hover:bg-gray-200 bg-gray-100 border-[1px] border-gray-300 transition-all duration-75 rounded-lg leading-[0px] py-5 text-center;
+  }
 
-    .calendar-heading {
-        @apply heading min-w-max leading-[0px] py-5 w-32 text-center
-    }
+  .calendar-heading {
+    @apply heading min-w-min leading-[0px] py-5 w-32 text-center;
+  }
 
-    .sub-panel-container {
-        @apply flex flex-col md:flex-row md:gap-x-2 gap-y-2 md:gap-y-0
-    }
+  .sub-panel-container {
+    @apply flex flex-col md:flex-row md:gap-x-2 gap-y-2 md:gap-y-0 flex-wrap;
+  }
 
-    .heading {
-        @apply font-bold text-2xl
-    }
+  .heading {
+    @apply font-bold text-2xl;
+  }
 
-    .shift-heading {
-        @apply font-[550]
-    }
+  .shift-heading {
+    @apply font-[550];
+  }
 
-    .list {
-        @apply mb-3 last:mb-0
-    }
+  .list {
+    @apply mb-3 last:mb-0;
+  }
 
-    .list-row {
-        @apply flex flex-row gap-x-1
-    }
+  .list-row {
+    @apply flex flex-row gap-x-1;
+  }
 
-    .t-cell {
-        @apply w-24 text-center border-[1px]
-    }
+  .t-cell {
+    @apply w-24 text-center border-[1px];
+  }
 
-    .tool-tip {
-        @apply absolute w-auto p-2 m-2 min-w-max right-[-1.5rem]
+  .tool-tip {
+    @apply absolute w-auto p-2 m-2 min-w-max right-[-1.5rem]
         rounded-md shadow-md bg-white border-[2px] font-bold 
         transition-all duration-100 ease-linear
         scale-0 origin-left;
-    }
+  }
 
-    .sub-panel {
-        @apply w-full md:w-max
-    }
+  .sub-panel {
+    @apply w-full lg:w-auto;
+  }
 
-    .sub-panel-2 {
-        @apply border-[2px] sub-panel p-2 flex flex-col items-center
-    }
+  .sub-panel-2 {
+    @apply border-[2px] sub-panel p-2 flex flex-col items-center sub-panel;
+  }
 }
