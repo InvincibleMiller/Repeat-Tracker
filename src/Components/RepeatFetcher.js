@@ -222,11 +222,23 @@ class RepeatFetcher {
       });
       //
 
+      function setDayToMidnight(day) {
+        const dt = new Date(day);
+
+        // dt.setTime(0);
+        dt.setHours(0);
+        dt.setMinutes(0);
+        dt.setSeconds(0);
+        dt.setMilliseconds(0);
+
+        return dt;
+      }
+
       const scores = days.map((day) => {
         if (!day.length) return;
 
         const scoredDay = {
-          date: new Date(sunday),
+          date: setDayToMidnight(day[0].date),
           score: 100,
           kitchen: {
             am: {

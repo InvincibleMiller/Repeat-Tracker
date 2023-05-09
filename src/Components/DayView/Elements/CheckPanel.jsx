@@ -11,10 +11,11 @@ const CheckPanel = ({ day }) => {
   const rf = new RepeatFetcher();
 
   useEffect(() => {
+    console.log(day);
     const effect = async () => {
       let cache = [];
 
-      if (day != null) {
+      if (day !== null) {
         // If this week is cached, dont pull it
         if (day >= weekStart && day < weekEnd) {
           cache = weekCache;
@@ -37,8 +38,10 @@ const CheckPanel = ({ day }) => {
         }
       }
 
+      console.clear();
       setLabelCheck(
         cache.filter(({ date }) => {
+          console.log(date.toLocaleString());
           return date.getDate() === day.getDate();
         })[0]
       );
@@ -50,8 +53,16 @@ const CheckPanel = ({ day }) => {
   }, [day]);
 
   const formatDateIntoHeader = (dt) => {
-    const str = dt.getMonth() + "/" + dt.getDate() + "/" + dt.getFullYear();
-    return str;
+    console.log(dt);
+
+    const dayStr = dt.toString().split(" ", 3);
+    const str = String().concat(...dayStr.map((s) => s + " "));
+
+    console.log(str);
+
+    const str_p2 = ` (${dt.toLocaleString().split(",", 1)})`;
+
+    return str + str_p2;
   };
 
   const getListItem = (finding, index, repeat = false) => {
@@ -229,7 +240,7 @@ const CheckPanel = ({ day }) => {
       {labelCheck && (
         <>
           <div className="heading mb-3 h-10">
-            {labelCheck.date ? formatDateIntoHeader(labelCheck.date) : null}
+            {labelCheck.date && formatDateIntoHeader(labelCheck.date)}
           </div>
           <div className="sub-panel-container">
             <div className="sub-panel">
