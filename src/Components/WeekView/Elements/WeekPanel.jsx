@@ -5,6 +5,8 @@ import Grader from "../../../Grader";
 const WeekPanel = ({ week }) => {
   const [weeklyData, setWeeklyData] = useState(null);
 
+  const rlDate = new Date();
+
   useEffect(() => {
     if (!week) return;
 
@@ -13,7 +15,7 @@ const WeekPanel = ({ week }) => {
       const res = await rf.getResults(week);
 
       setWeeklyData(res);
-      console.log(weeklyData);
+      // console.log(weeklyData);
     };
 
     effect();
@@ -135,6 +137,9 @@ const WeekPanel = ({ week }) => {
       </>
     );
   };
+
+  if (!weeklyData || isNaN(weeklyData.weeksResult.score) || week > rlDate)
+    return <div className="panel w-full">Nothing to show!</div>;
 
   return (
     <div

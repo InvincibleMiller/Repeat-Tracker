@@ -8,10 +8,11 @@ const CheckPanel = ({ day }) => {
   const [weekStart, setWs] = useState(null);
   const [weekEnd, setWe] = useState(null);
 
+  const rlDate = new Date();
+
   const rf = new RepeatFetcher();
 
   useEffect(() => {
-    console.log(day);
     const effect = async () => {
       let cache = [];
 
@@ -41,7 +42,7 @@ const CheckPanel = ({ day }) => {
       console.clear();
       setLabelCheck(
         cache.filter(({ date }) => {
-          console.log(date.toLocaleString());
+          // console.log(date.toLocaleString());
           return date.getDate() === day.getDate();
         })[0]
       );
@@ -53,12 +54,12 @@ const CheckPanel = ({ day }) => {
   }, [day]);
 
   const formatDateIntoHeader = (dt) => {
-    console.log(dt);
+    // console.log(dt);
 
     const dayStr = dt.toString().split(" ", 3);
     const str = String().concat(...dayStr.map((s) => s + " "));
 
-    console.log(str);
+    // console.log(str);
 
     const str_p2 = ` (${dt.toLocaleString().split(",", 1)})`;
 
@@ -230,6 +231,9 @@ const CheckPanel = ({ day }) => {
     );
   };
 
+  if (!labelCheck || day > rlDate)
+    return <div className="panel w-full">Nothing to show!</div>;
+
   return (
     <div
       className={`panel w-full origin-top ${
@@ -237,33 +241,31 @@ const CheckPanel = ({ day }) => {
       }
                      transition-all duration-[0.4s]`}
     >
-      {labelCheck && (
-        <>
-          <div className="heading mb-3 h-10">
-            {labelCheck.date && formatDateIntoHeader(labelCheck.date)}
+      <>
+        <div className="heading mb-3 h-10">
+          {labelCheck.date && formatDateIntoHeader(labelCheck.date)}
+        </div>
+        <div className="sub-panel-container">
+          <div className="sub-panel">
+            <h2 className="text-xl font-bold mb-2">Results:</h2>
+            {getScorePanel(labelCheck)}
           </div>
           <div className="sub-panel-container">
-            <div className="sub-panel">
-              <h2 className="text-xl font-bold mb-2">Results:</h2>
-              {getScorePanel(labelCheck)}
-            </div>
-            <div className="sub-panel-container">
-              <div className="flex-col">
-                <h2 className="shift-heading">Data</h2>
-                <div className="sub-panel-container">
-                  {getDataPanel(labelCheck)}
-                </div>
-              </div>
-            </div>
-            <div className="sub-panel-container">
-              <div className="sub-panel items-start">
-                <h2 className="shift-heading mb-2 text-lg">Label Checks</h2>
-                {getLabelCheckList()}
+            <div className="flex-col">
+              <h2 className="shift-heading">Data</h2>
+              <div className="sub-panel-container">
+                {getDataPanel(labelCheck)}
               </div>
             </div>
           </div>
-        </>
-      )}
+          <div className="sub-panel-container">
+            <div className="sub-panel items-start">
+              <h2 className="shift-heading mb-2 text-lg">Label Checks</h2>
+              {getLabelCheckList()}
+            </div>
+          </div>
+        </div>
+      </>
     </div>
   );
 };
