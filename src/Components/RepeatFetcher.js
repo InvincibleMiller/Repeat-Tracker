@@ -17,6 +17,8 @@ class RepeatFetcher {
     this.repeatPath = "repeats/";
     this.checksPath = "checks/";
 
+    this.whiteListTypes = ["Expired"];
+
     this._getWeekStartAndEnd = (date) => {
       const dt = new Date(date);
 
@@ -280,17 +282,41 @@ class RepeatFetcher {
           const path2 = check.dayPart === "AM" ? "am" : "pm";
 
           scoredDay[path][path2].totalLabelChecks += 1;
+
+          function handleDoubleAndTrack(array, violation, weight) {
+            if (
+              array.filter(
+                (vio) =>
+                  vio.type === violation.type &&
+                  vio.product === violation.product
+              ).length === 0
+            ) {
+              array.push(violation);
+              totalLosses += 2;
+            }
+          }
+
+          const repeatWeight = 2;
+          const normalWeight = 1;
+
           check.repeats.forEach((rep) => {
-            if (rep.type === "Expired") return;
+            if (this.whiteListTypes.includes(rep.type)) return;
 
-            scoredDay[path][path2].repeats.push(rep);
-            totalLosses += 2;
+            handleDoubleAndTrack(
+              scoredDay[path][path2].repeats,
+              rep,
+              repeatWeight
+            );
           });
-          check.violations.forEach((vio) => {
-            if (vio.type === "Expired") return;
 
-            scoredDay[path][path2].violations.push(vio);
-            totalLosses += 1;
+          check.violations.forEach((vio) => {
+            if (this.whiteListTypes.includes(vio.type)) return;
+
+            handleDoubleAndTrack(
+              scoredDay[path][path2].violations,
+              vio,
+              normalWeight
+            );
           });
 
           scoredDay.score -= totalLosses;
