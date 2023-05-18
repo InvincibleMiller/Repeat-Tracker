@@ -292,7 +292,7 @@ class RepeatFetcher {
               ).length === 0
             ) {
               array.push(violation);
-              totalLosses += 2;
+              totalLosses += weight;
             }
           }
 
