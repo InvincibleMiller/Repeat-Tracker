@@ -74,9 +74,11 @@ const CheckPanel = ({ day }) => {
         key={index}
         className="relative flex items-center justify-start group"
       >
-        <div className="break-normal">
+        <div className="break-normal flex min-w-0 gap-1">
           <p>{str}</p>
-          {repeat && <span className="text-red-600 font-semibold">x2</span>}
+          {repeat && (
+            <span className="text-red-600 inline-block font-semibold">x2</span>
+          )}
         </div>
 
         {finding.type != "No Label" && (
@@ -116,8 +118,8 @@ const CheckPanel = ({ day }) => {
 
   const getScorePanel = (labelCheck) => {
     return (
-      <div className="border-[2px] sub-panel p-2">
-        <div className="shift-heading mb-2 text-lg">
+      <div className="sub-panel-2 items-start">
+        <div className="shift-heading text-lg mb-2">
           Score: {labelCheck.score}
         </div>
         <div className="list">
@@ -128,6 +130,17 @@ const CheckPanel = ({ day }) => {
           {parseShift(labelCheck.kitchen.pm, "BOH PM")}
         </div>
         <div className="list">{parseShift(labelCheck.front.pm, "FOH PM")}</div>
+        <div className="list">
+          <h4 className="shift-heading">ERQA:</h4>
+          {labelCheck.erqa.map((finding) => {
+            return (
+              <span className="">
+                <span className="font-bold">* </span>
+                {finding.corrective}
+              </span>
+            );
+          })}
+        </div>
       </div>
     );
   };
@@ -188,50 +201,42 @@ const CheckPanel = ({ day }) => {
 
   const getDataPanel = (labelCheck) => {
     return (
-      <>
-        <div className="sub-panel">
-          <div className="sub-panel-2">
-            <div className="shift-heading mb-2 text-lg">
-              Label Check Completion Rate
-            </div>
-            <table className="border-collapse sub-panel border-[2px]">
-              <thead>
-                <tr>
-                  <th className="t-cell"></th>
-                  <th className="t-cell">AM</th>
-                  <th className="t-cell">PM</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th className="t-cell">Front</th>
-                  <td className="t-cell">
-                    {getLabelCheckCompletionRate(labelCheck.front.am, 2) + "%"}
-                  </td>
-                  <td className="t-cell">
-                    {getLabelCheckCompletionRate(labelCheck.front.pm, 2) + "%"}
-                  </td>
-                </tr>
-                <tr>
-                  <th className="t-cell">Kitchen</th>
-                  <td className="t-cell">
-                    {getLabelCheckCompletionRate(labelCheck.kitchen.am, 2) +
-                      "%"}
-                  </td>
-                  <td className="t-cell">
-                    {getLabelCheckCompletionRate(labelCheck.kitchen.pm, 2) +
-                      "%"}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </>
+      <div className="sub-panel-2 xl:items-start xl:max-w-max">
+        <div className="shift-heading">Label Check Completion Rate</div>
+        <table className="border-collapse sub-panel border-[2px]">
+          <thead>
+            <tr>
+              <th className="t-cell"></th>
+              <th className="t-cell">AM</th>
+              <th className="t-cell">PM</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th className="t-cell">Front</th>
+              <td className="t-cell">
+                {getLabelCheckCompletionRate(labelCheck.front.am, 2) + "%"}
+              </td>
+              <td className="t-cell">
+                {getLabelCheckCompletionRate(labelCheck.front.pm, 2) + "%"}
+              </td>
+            </tr>
+            <tr>
+              <th className="t-cell">Kitchen</th>
+              <td className="t-cell">
+                {getLabelCheckCompletionRate(labelCheck.kitchen.am, 2) + "%"}
+              </td>
+              <td className="t-cell">
+                {getLabelCheckCompletionRate(labelCheck.kitchen.pm, 2) + "%"}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     );
   };
 
-  if (!labelCheck || day > rlDate)
+  if (!labelCheck || (day > rlDate && !labelCheck.score))
     return <div className="panel w-full">Nothing to show!</div>;
 
   return (
@@ -245,25 +250,24 @@ const CheckPanel = ({ day }) => {
         <div className="heading mb-3 h-10">
           {labelCheck.date && formatDateIntoHeader(labelCheck.date)}
         </div>
-        <div className="sub-panel-container">
-          <div className="sub-panel">
-            <h2 className="text-xl font-bold mb-2">Results:</h2>
+        <div className="sub-panel-container gap-2">
+          <div className="sub-panel xl:w-5/12 2xl:w-3/12">
+            <h2 className="panel-heading">Results</h2>
             {getScorePanel(labelCheck)}
           </div>
-          <div className="sub-panel-container">
-            <div className="flex-col">
-              <h2 className="shift-heading">Data</h2>
-              <div className="sub-panel-container">
-                {getDataPanel(labelCheck)}
-              </div>
+          <div className="sub-panel-container flex-1 flex-col gap-2">
+            <div className="sub-panel">
+              <h2 className="panel-heading">Data</h2>
+              {getDataPanel(labelCheck)}
             </div>
-          </div>
-          <div className="sub-panel-container">
-            <div className="sub-panel items-start">
-              <h2 className="shift-heading mb-2 text-lg">Label Checks</h2>
+
+            <div className="sub-panel">
+              <h2 className="panel-heading">Label Checks</h2>
               {getLabelCheckList()}
             </div>
           </div>
+          {/* <div className="sub-panel-container">
+          </div> */}
         </div>
       </>
     </div>

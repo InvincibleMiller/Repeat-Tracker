@@ -270,6 +270,9 @@ class RepeatFetcher {
               repeats: [],
             },
           },
+          erqa: [
+            //... ERQA Violations
+          ],
         };
 
         // Setting the proper day
@@ -291,7 +294,15 @@ class RepeatFetcher {
                   vio.product === violation.product
               ).length === 0
             ) {
-              array.push(violation);
+              if (
+                violation.type === "ERQA" &&
+                violation.product === "ERQA Corrective Action"
+              ) {
+                scoredDay.erqa.push(violation);
+              } else {
+                array.push(violation);
+              }
+
               totalLosses += weight;
             }
           }
