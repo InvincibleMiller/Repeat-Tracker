@@ -131,7 +131,7 @@ const CheckPanel = ({ day }) => {
         </div>
         <div className="list">{parseShift(labelCheck.front.pm, "FOH PM")}</div>
         <div className="list">
-          <h4 className="shift-heading">ERQA:</h4>
+          <h4 className="shift-heading">RQA:</h4>
           {labelCheck.erqa.map((finding) => {
             return (
               <span className="">
