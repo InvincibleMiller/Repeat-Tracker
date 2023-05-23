@@ -39,7 +39,7 @@ const CheckPanel = ({ day }) => {
         }
       }
 
-      console.clear();
+      // console.clear();
       setLabelCheck(
         cache.filter(({ date }) => {
           // console.log(date.toLocaleString());
@@ -130,17 +130,21 @@ const CheckPanel = ({ day }) => {
           {parseShift(labelCheck.kitchen.pm, "BOH PM")}
         </div>
         <div className="list">{parseShift(labelCheck.front.pm, "FOH PM")}</div>
-        <div className="list">
-          <h4 className="shift-heading">RQA:</h4>
-          {labelCheck.erqa.map((finding) => {
-            return (
-              <span className="">
-                <span className="font-bold">* </span>
-                {finding.corrective}
-              </span>
-            );
-          })}
-        </div>
+        {labelCheck.rqa.length > 0 && (
+          <div className="list">
+            <h4 className="shift-heading">RQA:</h4>
+            <div className="flex flex-col gap-1">
+              {labelCheck.rqa.map((finding) => {
+                return (
+                  <span>
+                    <span className="font-bold">* </span>
+                    {finding.corrective}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     );
   };

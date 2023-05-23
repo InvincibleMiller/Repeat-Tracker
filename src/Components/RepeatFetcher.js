@@ -143,6 +143,7 @@ class RepeatFetcher {
           // Listing the actual violations found during a check
           violations: [],
           repeats: [],
+          rqa: check.rqa,
         };
 
         this._consolidateViolations(check.violations).forEach((vio) => {
@@ -270,8 +271,8 @@ class RepeatFetcher {
               repeats: [],
             },
           },
-          erqa: [
-            //... ERQA Violations
+          rqa: [
+            //... RQA Violations
           ],
         };
 
@@ -294,15 +295,7 @@ class RepeatFetcher {
                   vio.product === violation.product
               ).length === 0
             ) {
-              if (
-                violation.type === "ERQA" &&
-                violation.product === "ERQA Corrective Action"
-              ) {
-                scoredDay.erqa.push(violation);
-              } else {
-                array.push(violation);
-              }
-
+              array.push(violation);
               totalLosses += weight;
             }
           }
@@ -310,25 +303,33 @@ class RepeatFetcher {
           const repeatWeight = 2;
           const normalWeight = 1;
 
-          check.repeats.forEach((rep) => {
-            if (this.whiteListTypes.includes(rep.type)) return;
+          check.repeats &&
+            check.repeats.forEach((rep) => {
+              if (this.whiteListTypes.includes(rep.type)) return;
 
-            handleDoubleAndTrack(
-              scoredDay[path][path2].repeats,
-              rep,
-              repeatWeight
-            );
-          });
+              handleDoubleAndTrack(
+                scoredDay[path][path2].repeats,
+                rep,
+                repeatWeight
+              );
+            });
 
-          check.violations.forEach((vio) => {
-            if (this.whiteListTypes.includes(vio.type)) return;
+          check.violations &&
+            check.violations.forEach((vio) => {
+              if (this.whiteListTypes.includes(vio.type)) return;
 
-            handleDoubleAndTrack(
-              scoredDay[path][path2].violations,
-              vio,
-              normalWeight
-            );
-          });
+              handleDoubleAndTrack(
+                scoredDay[path][path2].violations,
+                vio,
+                normalWeight
+              );
+            });
+
+          check.rqa &&
+            check.rqa.forEach((vio) => {
+              scoredDay.rqa.push(vio);
+              totalLosses += normalWeight;
+            });
 
           scoredDay.score -= totalLosses;
 
