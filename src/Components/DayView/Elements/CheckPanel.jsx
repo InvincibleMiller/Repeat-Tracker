@@ -120,7 +120,7 @@ const CheckPanel = ({ day }) => {
     return (
       <div className="sub-panel-2 items-start">
         <div className="shift-heading text-lg mb-2">
-          Score: {labelCheck.score}
+          Score: {labelCheck.score}%
         </div>
         <div className="list">
           {parseShift(labelCheck.kitchen.am, "BOH AM")}
@@ -198,6 +198,17 @@ const CheckPanel = ({ day }) => {
         <ExpandableItem
           title="BOH PM"
           inner={getWholeLabelCheck(labelCheck.kitchen.pm)}
+        />
+        <ExpandableItem
+          title="RQA"
+          inner={labelCheck.rqa.map((finding) => {
+            return (
+              <ExpandableItem
+                title={finding.fullName}
+                inner={<span>{finding.corrective}</span>}
+              />
+            );
+          })}
         />
       </div>
     );

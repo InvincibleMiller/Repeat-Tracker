@@ -302,6 +302,7 @@ class RepeatFetcher {
 
           const repeatWeight = 2;
           const normalWeight = 1;
+          const erqaWeight = 0;
 
           check.repeats &&
             check.repeats.forEach((rep) => {
@@ -327,8 +328,8 @@ class RepeatFetcher {
 
           check.rqa &&
             check.rqa.forEach((vio) => {
-              scoredDay.rqa.push(vio);
-              totalLosses += normalWeight;
+              scoredDay.rqa.push({ ...vio, fullName: check.fullName });
+              totalLosses += erqaWeight;
             });
 
           scoredDay.score -= totalLosses;
