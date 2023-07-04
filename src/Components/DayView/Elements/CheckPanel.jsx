@@ -99,12 +99,12 @@ const CheckPanel = ({ day }) => {
       return getListItem(finding, i, true);
     });
 
-    const anything = rep.length + vio.length;
+    const anything = rep.length + vio.length > 0;
 
     return (
       <>
         <h4 className="shift-heading">
-          {name}: {!anything ? "🏅" : null}
+          {name}: {!anything ? (shift.checks.length > 0 ? "🏅" : "❌") : null}
         </h4>
         {anything != 0 && (
           <>
